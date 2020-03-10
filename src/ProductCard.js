@@ -1,34 +1,41 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { useParams } from 'react-router-dom';
+import { Card, Button } from 'react-bootstrap';
 import { add, remove } from './action';
-import './ProductCard.css'
-import { Card, Button, CardBody, CardSubtitle, CardTitle } from 'reactstrap';
 
-function ProductCard({ product, listType }) {
-    const { id, name, price, description, image_url } = product;
-    const dispatch = useDispatch();
-    let handleClick;
-    let buttonText;
+function ProductCard() {
+  const dispatch = useDispatch();
+  const { id } = useParams();
+  const product = useSelector(st => st.inventory.find(prod => prod.id === id));
+  const { name, description, price, image_url } = product;
 
-    if (listType === "inventory") {
-        handleClick = () => dispatch(add(product));
-        buttonText = "+";
-    } else {
-        handleClick = () => dispatch(remove(product.id));
-        buttonText = "-";
-    }
+  const cartProduct = useSelector(st => st.cart.find(prod => prod.id === id));
 
-    return (
-        <div className="product-card" id={id}>
-            <Card body outline color="secondary">
-                <CardBody className="pb-4" >
-                    <CardTitle><h3>{name}</h3></CardTitle>
-                    <CardSubtitle>${price}</CardSubtitle>
-                </CardBody>
-                <Button color="primary" onClick={handleClick}>{buttonText}</Button>
-            </Card>
-        </div>
-    )
+  const quantity = cartProduct ? cartProduct.quantity : 0;
+
+
+  const handleRemove = () => {
+    dispatch(remove(id))
+  };
+
+  const handleAdd = () => {
+    dispatch(add(product))
+  };
+
+  return (
+    <Card className="ProductCard">
+      <Card.Body>
+        <Card.Img variant="top" src={image_url} style={{ width: '400px' }} />
+        <Card.Title>{name}</Card.Title>
+        <Card.Text>${price}</Card.Text>
+        <Card.Text>{description}</Card.Text>
+        <Card.Text>You have {quantity} in your cart!</Card.Text>
+      </Card.Body>
+      <Button size='md' variant="primary" onClick={handleAdd}>I Want It</Button>
+      {quantity > 0 ? <Button size='md' variant="danger" onClick={handleRemove}>No thanks!</Button> : null}
+    </Card>
+  );
 }
 
 export default ProductCard;
