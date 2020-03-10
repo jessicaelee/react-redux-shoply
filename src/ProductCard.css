@@ -1,0 +1,8 @@
+.product-card {
+    border: 1px solid grey;
+    width: 150px;
+    height: 200px;
+    margin: 4px auto;
+    border-radius: 5px;
+    display: inline-block;
+}
