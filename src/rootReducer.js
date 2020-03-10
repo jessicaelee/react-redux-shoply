@@ -6,7 +6,7 @@ function getProducts(inventory) {
 
     for (let id in inventory) {
         prodArr.push({ ...inventory[id], id });
-    }
+    };
 
     return prodArr;
 }
@@ -23,7 +23,7 @@ function rootReducer(state = INITIAL_STATE, action) {
         default:
             console.warn("there is no action type: ", action.type);
             return state;
-    }
-}
+    };
+};
 
 export default rootReducer;

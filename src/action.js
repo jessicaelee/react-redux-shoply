@@ -13,3 +13,5 @@ export function remove(id) {
         payload: { id }
     }
 }
+
+// module.exports = { add, remove }
